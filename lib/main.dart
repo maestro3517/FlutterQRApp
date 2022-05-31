@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import 'package:qrscan/qrscan.dart' as scanner;
 void main() {
   runApp(const MyApp());
 }
@@ -51,6 +53,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String barcode = "";
 
   void _incrementCounter() {
     setState(() {
@@ -61,6 +64,27 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  Future scan() async {
+    // try {
+    //   String barcode = await FlutterBarcodeScan.scan();
+    //   setState(() => this.barcode = barcode);
+    // } on PlatformException catch (e) {
+    //   if (e.code == FlutterBarcodeScan.CameraAccessDenied) {
+    //     setState(() {
+    //       barcode = 'The user did not grant the camera permission!';
+    //     });
+    //   } else {
+    //     setState(() => barcode = 'Unknown error: $e');
+    //   }
+    // } on FormatException {
+    //   setState(() => barcode =
+    //   'null (User returned using the "back"-button before scanning anything. Result)');
+    // } catch (e) {
+    //   setState(() => barcode = 'Unknown error: $e');
+    // }
+    String? cameraScanResult = await scanner.scan();
   }
 
   @override
@@ -108,9 +132,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: scan,
+        tooltip: 'Scan QR',
+        child: const Icon(Icons.qr_code_scanner),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
