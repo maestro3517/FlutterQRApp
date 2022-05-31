@@ -1,0 +1,185 @@
+// To parse this JSON data, do
+//
+//     final welcome = welcomeFromJson(jsonString);
+
+import 'dart:convert';
+
+Welcome welcomeFromJson(String str) => Welcome.fromJson(json.decode(str));
+
+String welcomeToJson(Welcome data) => json.encode(data.toJson());
+
+class Welcome {
+    Welcome({
+        this.status,
+        this.gmsErrors,
+        this.data,
+    });
+
+    String status;
+    List<dynamic> gmsErrors;
+    Data data;
+
+    factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
+        status: json["status"],
+        gmsErrors: List<dynamic>.from(json["gmsErrors"].map((x) => x)),
+        data: Data.fromJson(json["data"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "status": status,
+        "gmsErrors": List<dynamic>.from(gmsErrors.map((x) => x)),
+        "data": data.toJson(),
+    };
+}
+
+class Data {
+    Data({
+        this.id,
+        this.controlNo,
+        this.serialNo,
+        this.assetNo,
+        this.nistNo,
+        this.gaugeType,
+        this.model,
+        this.manufacturer,
+        this.manufacturerDet,
+        this.measurementTypes,
+        this.measurementUnit,
+        this.rangeOrSize,
+        this.accuracy,
+        this.sourceVendor,
+        this.guageCost,
+        this.gaugeDesc,
+        this.storageLoc,
+        this.gaugeStatus,
+        this.conditionAcquired,
+        this.divId,
+        this.grId,
+        this.deptId,
+        this.createdTs,
+        this.updatedTs,
+        this.lastCalibrationDate,
+        this.nextCalibrationDate,
+        this.acquiredDate,
+        this.certId,
+        this.billId,
+        this.imageId,
+        this.gaugeProfile,
+        this.lastMsaDate,
+        this.msaFrequency,
+        this.nextMsaDate,
+        this.calibFrequency,
+    });
+
+    int id;
+    String controlNo;
+    String serialNo;
+    String assetNo;
+    String nistNo;
+    String gaugeType;
+    String model;
+    String manufacturer;
+    String manufacturerDet;
+    String measurementTypes;
+    String measurementUnit;
+    String rangeOrSize;
+    String accuracy;
+    String sourceVendor;
+    int guageCost;
+    String gaugeDesc;
+    String storageLoc;
+    String gaugeStatus;
+    String conditionAcquired;
+    int divId;
+    int grId;
+    int deptId;
+    int createdTs;
+    dynamic updatedTs;
+    int lastCalibrationDate;
+    int nextCalibrationDate;
+    int acquiredDate;
+    int certId;
+    dynamic billId;
+    dynamic imageId;
+    String gaugeProfile;
+    dynamic lastMsaDate;
+    dynamic msaFrequency;
+    dynamic nextMsaDate;
+    int calibFrequency;
+
+    factory Data.fromJson(Map<String, dynamic> json) => Data(
+        id: json["id"],
+        controlNo: json["controlNo"],
+        serialNo: json["serialNo"],
+        assetNo: json["assetNo"],
+        nistNo: json["nistNo"],
+        gaugeType: json["gaugeType"],
+        model: json["model"],
+        manufacturer: json["manufacturer"],
+        manufacturerDet: json["manufacturerDet"],
+        measurementTypes: json["measurementTypes"],
+        measurementUnit: json["measurementUnit"],
+        rangeOrSize: json["rangeOrSize"],
+        accuracy: json["accuracy"],
+        sourceVendor: json["sourceVendor"],
+        guageCost: json["guageCost"],
+        gaugeDesc: json["gaugeDesc"],
+        storageLoc: json["storageLoc"],
+        gaugeStatus: json["gaugeStatus"],
+        conditionAcquired: json["conditionAcquired"],
+        divId: json["divId"],
+        grId: json["grId"],
+        deptId: json["deptId"],
+        createdTs: json["createdTs"],
+        updatedTs: json["updatedTs"],
+        lastCalibrationDate: json["lastCalibrationDate"],
+        nextCalibrationDate: json["nextCalibrationDate"],
+        acquiredDate: json["acquiredDate"],
+        certId: json["certId"],
+        billId: json["billId"],
+        imageId: json["imageId"],
+        gaugeProfile: json["gaugeProfile"],
+        lastMsaDate: json["lastMsaDate"],
+        msaFrequency: json["msaFrequency"],
+        nextMsaDate: json["nextMsaDate"],
+        calibFrequency: json["calibFrequency"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "controlNo": controlNo,
+        "serialNo": serialNo,
+        "assetNo": assetNo,
+        "nistNo": nistNo,
+        "gaugeType": gaugeType,
+        "model": model,
+        "manufacturer": manufacturer,
+        "manufacturerDet": manufacturerDet,
+        "measurementTypes": measurementTypes,
+        "measurementUnit": measurementUnit,
+        "rangeOrSize": rangeOrSize,
+        "accuracy": accuracy,
+        "sourceVendor": sourceVendor,
+        "guageCost": guageCost,
+        "gaugeDesc": gaugeDesc,
+        "storageLoc": storageLoc,
+        "gaugeStatus": gaugeStatus,
+        "conditionAcquired": conditionAcquired,
+        "divId": divId,
+        "grId": grId,
+        "deptId": deptId,
+        "createdTs": createdTs,
+        "updatedTs": updatedTs,
+        "lastCalibrationDate": lastCalibrationDate,
+        "nextCalibrationDate": nextCalibrationDate,
+        "acquiredDate": acquiredDate,
+        "certId": certId,
+        "billId": billId,
+        "imageId": imageId,
+        "gaugeProfile": gaugeProfile,
+        "lastMsaDate": lastMsaDate,
+        "msaFrequency": msaFrequency,
+        "nextMsaDate": nextMsaDate,
+        "calibFrequency": calibFrequency,
+    };
+}
