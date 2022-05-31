@@ -71,14 +71,14 @@ class MainActivity: FlutterActivity(),ZXingScannerView.ResultHandler {
     override fun handleResult(result: Result?) {
         val intent = Intent()
         intent.putExtra("SCAN_RESULT", result.toString())
-        setResult(Activity.RESULT_OK, intent)
+        setResult(FlutterActivity.RESULT_OK, intent)
         finish()
     }
 
     fun finishWithError(errorCode: String) {
         val intent = Intent()
         intent.putExtra("ERROR_CODE", errorCode)
-        setResult(Activity.RESULT_CANCELED, intent)
+        setResult(FlutterActivity.RESULT_CANCELED, intent)
         finish()
     }
 

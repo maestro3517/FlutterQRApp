@@ -1,3 +1,5 @@
+package com.example.flutter_qr_app
+
 import androidx.annotation.NonNull
 
 import android.app.Activity
@@ -77,7 +79,7 @@ class FlutterBarcodeScanPlugin : FlutterPlugin,
             return
         }
         activity?.let { activity ->
-            val intent = Intent(activity, BarcodeScannerActivity::class.java)
+            val intent = Intent(activity, MainActivity::class.java)
             activity.startActivityForResult(intent, 100)
         }
     }
@@ -89,7 +91,9 @@ class FlutterBarcodeScanPlugin : FlutterPlugin,
                 barcode?.let { this.result?.success(barcode) }
             } else {
                 val errorCode = data?.getStringExtra("ERROR_CODE")
-                this.result?.error(errorCode, null, null)
+                if (errorCode != null) {
+                    this.result?.error(errorCode, null, null)
+                }
             }
             return true
         }
