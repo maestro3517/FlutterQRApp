@@ -23,31 +23,10 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: AppBar(title: const Text(_title)),
-        body: const MyStatefulWidget(),
+        body: const LoginStatefulWidget(),
       ),
     );
   }
 
-
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  String barcode = "";
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: MyStatefulWidget()
-      );
-  }
 }
 

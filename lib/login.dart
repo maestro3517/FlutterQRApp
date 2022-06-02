@@ -3,14 +3,14 @@ import 'package:flutter_qr_app/types.dart';
 import 'package:flutter_qr_app/scannerWithController.dart';
 import 'package:localstorage/localstorage.dart';
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+class LoginStatefulWidget extends StatefulWidget {
+  const LoginStatefulWidget({Key? key}) : super(key: key);
 
   @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+  State<LoginStatefulWidget> createState() => _LoginStatefulWidgetState();
 }
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
   final LocalStorage storage = LocalStorage('floatinityQR');
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -33,15 +33,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         });
       }
     });
-
-    String token=storage.getItem("token");
-    if(token.isNotEmpty){
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const BarcodeScannerWithController()),
-      );
-    }
   }
 
   @override
