@@ -60,6 +60,13 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  
+  assets:
+    - images/
+    - images/widgets/
+    - images/widgets/materialWidgets/
+    - images/widgets/materialWidgets/mwInformationDisplayWidgets/
+    - images/widgets/materialWidgets/mwInformationDisplayWidgets/gridview/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
