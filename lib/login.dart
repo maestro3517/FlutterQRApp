@@ -145,7 +145,6 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
     } else {
       setState(() {
         errorPassword = "Invalid Username/Password";
-        errorUsername = "Invalid Username/Password";
       });
     }
   }
