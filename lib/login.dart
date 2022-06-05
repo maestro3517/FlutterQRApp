@@ -12,8 +12,8 @@ class LoginStatefulWidget extends StatefulWidget {
 
 class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
   final LocalStorage storage = LocalStorage('floatinityQR');
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   String errorPassword = "";
   String errorUsername = "";
 
