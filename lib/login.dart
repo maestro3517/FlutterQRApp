@@ -103,15 +103,41 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
 
     authenticate(x);
   }
+  authenticate(x) async {
+    final apiResponse = await httpLogin(x);
+
+    if (apiResponse.error.isEmpty) {
       Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => const BarcodeScannerWithController()),
       );
-    } else {
       setState(() {
-        errorPassword = "Invalid Username/Password";
+        nameController.clear();
+        passwordController.clear();
+        passwordController.clear();
       });
     }
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+
+    else {
+      final errorString = apiResponse.error;
+      if (errorString.contains("USER")) {
+        setState(() {
+          error[1] = errorString;
+        });
+      } else if (errorString.contains("PASS")) {
+        setState(() {
+          error[2] = errorString;
+        });
+      } else {
+        setState(() {
+          error[0] = errorString;
+        });
+      }
+    }
+
+    return null;
   }
 }
