@@ -1,46 +1,34 @@
+import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart' as flutterKey;
+import 'package:flutter_qr_app/Widgets/LoginPassword.dart';
 import 'package:flutter_qr_app/types.dart';
 import 'package:flutter_qr_app/scannerWithController.dart';
-import 'package:localstorage/localstorage.dart';
+import 'package:encrypt/encrypt.dart' as Encrypt;
+import 'package:flutter_qr_app/Widgets/LoginUsername.dart';
+
+import 'Widgets/LoginKey.dart';
+import 'http/httpMethods.dart';
 
 class LoginStatefulWidget extends StatefulWidget {
-  const LoginStatefulWidget({Key? key}) : super(key: key);
+  const LoginStatefulWidget({flutterKey.Key? key}) : super(key: key);
 
   @override
   State<LoginStatefulWidget> createState() => _LoginStatefulWidgetState();
 }
 
 class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
-  final LocalStorage storage = LocalStorage('floatinityQR');
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  String errorPassword = "";
-  String errorUsername = "";
+  final TextEditingController loginController = TextEditingController();
+
+  var error = List.generate(3, (index) => "");
 
   @override
-  void initState() {
-    passwordController.addListener(() {
-      if (errorPassword.isNotEmpty) {
-        setState(() {
-          errorPassword = "";
-        });
-      }
-    });
-    nameController.addListener(() {
-      if (errorUsername.isNotEmpty) {
-        setState(() {
-          errorUsername = "";
-        });
-      }
-    });
-  }
+  void initState() {}
 
   @override
-  void dispose(){
-    passwordController.removeListener(() { });
-    nameController.removeListener(() { });
-  }
-
+  void dispose() {}
 
   @override
   Widget build(BuildContext context) {
