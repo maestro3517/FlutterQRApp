@@ -19,17 +19,27 @@ class LoginResponse {
   const LoginResponse(this.status, this.error);
 }
 
-Future<void> setHeaders(HttpClientRequest req) async {
+Future<void> setHeaders(
+    HttpClientRequest req, [Map<String, String>? headers]) async {
   for (final key in constants.headers.keys) {
     if (constants.headers.containsValue(key)) {
       final value = constants.headers[key];
       req.headers.set(key, value!);
     }
   }
+
+  if(headers != null) {
+    for (final key in headers.keys) {
+      if (headers.containsValue(key)) {
+        final value = headers[key];
+        req.headers.set(key, value!);
+      }
+    }
+  }
+
 }
 
 Future<LoginResponse> login(LoginData login) async {
-
   final req = await httpClient
       .postUrl(Uri.parse("${constants.baseUrl}gauge/gms/gauth/login"));
 
@@ -45,7 +55,7 @@ Future<LoginResponse> login(LoginData login) async {
   if (res.statusCode == 200) {
     final status = loginRes["status"];
     final errors =
-    (loginRes["gmsErrors"] as List).map((e) => e as String).toList();
+        (loginRes["gmsErrors"] as List).map((e) => e as String).toList();
 
     String errorString = "";
 
@@ -54,16 +64,16 @@ Future<LoginResponse> login(LoginData login) async {
       storage.setItem('token', token);
     } else {
       for (final err in errors) {
-        err.split("_").map((value) {
-          errorString = "$errorString $value";
-        });
+        for (final splitError in err.split("_")) {
+          errorString = "$errorString $splitError";
+        }
       }
     }
 
     return LoginResponse(status, errorString);
   } else {
     final status = res.statusCode.toString();
-    const error="Unable to load app";
+    const error = "Unable to load app";
     return LoginResponse(status, error);
   }
 }
@@ -74,13 +84,13 @@ Future<QrData> getScanData(String qrCode) async {
 
   final token = storage.getItem('token').toString();
 
-  var headers = constants.headers;
+  final Map<String,String> headers = {};
 
-  if(token.isNotEmpty) {
-      headers[constants.tokenKey] = token;
+  if (token.isNotEmpty) {
+    headers[constants.tokenKey] = token;
   }
 
-  await setHeaders(req);
+  await setHeaders(req,headers.isEmpty ? null : headers);
 
   final res = await req.close();
 
