@@ -88,17 +88,21 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
         ));
   }
 
-  void login() {
+  Future<void> login() async {
+    final key = Encrypt.Key.fromUtf8("ProGMsFLo@tiN!ty");
+    final iv = IV.fromUtf8("ProGMsFLo@tiN!ty");
+    final encyptedString = Encrypt.Encrypter(
+      AES(key, mode: Encrypt.AESMode.ecb, padding: "PKCS7"),
+    ).encrypt(passwordController.text, iv: iv);
+
     final user = User(
-        un: nameController.value.text,
-        pwd: passwordController.value.text,
-        loginKey: 123);
+        un: nameController.text,
+        pwd: encyptedString.base64,
+        loginKey: loginController.value as int);
     final x = userToJson(user);
 
-    if (user.un == "pooja@floatinity.com" &&
-        user.pwd == "YQeaI7frUFfcaFMkakLizw==") {
-      const token = "xyz";
-      storage.setItem('token', token);
+    authenticate(x);
+  }
       Navigator.push(
         context,
         MaterialPageRoute(
