@@ -36,6 +36,8 @@ dependencies:
   mobile_scanner: ^2.0.0
   image_picker: ^0.8.5+3
   localstorage: ^4.0.0+1
+  http: ^0.13.4
+  encrypt: ^5.0.1
 
 dev_dependencies:
   flutter_test:
