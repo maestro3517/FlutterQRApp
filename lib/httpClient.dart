@@ -72,8 +72,15 @@ Future<QrData> getScanData(String qrCode) async {
   final req = await httpClient
       .getUrl(Uri.parse("${constants.baseUrl}gauge/read/qr/?scandata=$qrCode"));
 
+  final token = storage.getItem('token').toString();
+
+  var headers = constants.headers;
+
+  if(token.isNotEmpty) {
+      headers[constants.tokenKey] = token;
+  }
+
   await setHeaders(req);
-  // req.headers.set("User-Agent", constants.userAgent);
 
   final res = await req.close();
 
