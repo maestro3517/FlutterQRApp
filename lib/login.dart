@@ -52,49 +52,23 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(10),
                 child: const Text(
-                  '',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30),
-                )),
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
                   'Sign in',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 30),
                 )),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: nameController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'User Name',
-                  errorText: errorUsername.isEmpty ? null : errorUsername,
-                ),
-              ),
+            LoginKey(
+              loginController: loginController,
+              error: error,
+              onChange: (v) {},
             ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                obscureText: true,
-                controller: passwordController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                  errorText: errorPassword.isEmpty ? null : errorPassword,
-                ),
-              ),
+            UserName(
+              nameController: nameController,
+              error: error,
+              onChange: (v) {},
             ),
-            TextButton(
-              onPressed: () {
-                //forgot password screen
-              },
-              child: const Text(
-                'Forgot Password',
-              ),
+            Password(
+              passwordController: passwordController,
+              error: error,
+              onChange: (v) {},
             ),
             Container(
                 height: 50,
