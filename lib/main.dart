@@ -7,8 +7,8 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class FlutterApp extends StatelessWidget {
+  const FlutterApp({Key? key}) : super(key: key);
 
   static const String _title = 'Gauge Management System';
   static const colorCustom = MaterialColor(0xFF985aed, constants.color);
