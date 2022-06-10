@@ -4,7 +4,7 @@ import 'package:flutter_qr_app/constants.dart' as constants;
 
 
 void main() {
-  runApp(const MyApp());
+  runApp(const FlutterApp());
 }
 
 class FlutterApp extends StatelessWidget {
