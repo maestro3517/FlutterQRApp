@@ -38,13 +38,12 @@ Future<void> setHeaders(HttpClientRequest req,
   }
 }
 
-Future<LoginResponse> login(LoginData login) async {
-  final req = await httpClient
-      .postUrl(Uri.parse("${constants.baseUrl}gauge/gms/gauth/login"));
+Future<LoginResponse> login(LoginData login, bool rememberMe) async {
+  final req = await httpClient.postUrl(Uri.parse("${constants.baseUrl}/gauth/login"));
 
   await setHeaders(req);
 
-  req.write(login);
+  req.write(login.toRawJson());
   await req.flush();
 
   final res = await req.close();
@@ -53,14 +52,16 @@ Future<LoginResponse> login(LoginData login) async {
 
   if (res.statusCode == 200) {
     final status = loginRes["status"];
-    final errors =
-        (loginRes["gmsErrors"] as List).map((e) => e as String).toList();
-
     String errorString = "";
+    final errors = loginRes["gmsErrors"] ?? loginRes["globalErrors"];
 
     if (status == "SUCCESS") {
       final token = res.headers[constants.tokenKey];
-      storage.setItem('token', token);
+      await storage.setItem('token', token);
+
+      if(rememberMe){
+        await storage.setItem('creds', login);
+      }
     } else {
       for (final err in errors) {
         for (final splitError in err.split("_")) {

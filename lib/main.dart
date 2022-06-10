@@ -6,11 +6,11 @@ import 'package:flutter_qr_app/widgets/WAQrScannerScreen.dart';
 import 'login.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const FlutterApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class FlutterApp extends StatelessWidget {
+  const FlutterApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override

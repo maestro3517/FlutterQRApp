@@ -1,5 +1,5 @@
-import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter/src/foundation/key.dart' as flutterKey;
 import 'package:flutter_qr_app/Widgets/LoginPassword.dart';
 import 'package:encrypt/encrypt.dart' as Encrypt;
@@ -7,30 +7,47 @@ import 'package:flutter_qr_app/Widgets/LoginUsername.dart';
 import 'package:flutter_qr_app/types/login.dart';
 import 'package:flutter_qr_app/widgets/WAQrScannerScreen.dart';
 
+import 'package:flutter_qr_app/utils.dart';
+import 'Widgets/LoginPassword.dart';
+import 'scannerWithController.dart';
+import 'Widgets/LoginUsername.dart';
+import 'package:localstorage/localstorage.dart';
+
 import 'Widgets/LoginKey.dart';
 import 'httpClient.dart';
+import 'constants.dart' as constants;
 
 class LoginStatefulWidget extends StatefulWidget {
-  const LoginStatefulWidget({flutterKey.Key? key}) : super(key: key);
+  const LoginStatefulWidget({Key? key}) : super(key: key);
 
   @override
   State<LoginStatefulWidget> createState() => _LoginStatefulWidgetState();
 }
 
 class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController loginController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController loginController = TextEditingController();
+  final LocalStorage storage = LocalStorage(constants.localStorageKey);
 
   var error = List.generate(3, (index) => "");
+  bool rememberMe = false;
+
+  Future<void> init() async {
+    final state = await storage.ready;
+    final creds = storage.getItem("creds");
+    if (creds != null) {
+      setState(() {
+        nameController.text = creds["un"];
+        passwordController.text = creds["pwd"].toString().toDecrypted();
+        loginController.text = creds["loginKey"].toString();
+      });
+    }
+  }
 
   @override
   void initState() {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) => WAQrScannerScreen()),
-    // );
+    init();
   }
 
   @override
@@ -40,37 +57,70 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(10),
+    return Container(
+        padding: const EdgeInsets.fromLTRB(10, 100, 10, 0),
+        alignment: Alignment.center,
         child: ListView(
           children: <Widget>[
             Container(
                 alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
                 child: const Text(
-                  'Sign in',
+                  'Sign In',
                   style: TextStyle(fontSize: 30),
                 )),
             LoginKey(
-              loginController: loginController,
-              error: error,
-              onChange: (v) {},
-            ),
+                loginController: loginController,
+                error: error,
+                onChange: (v) {
+                  if (error[0].isNotEmpty) {
+                    setState(() {
+                      error[0] = "";
+                    });
+                  }
+                }),
             UserName(
-              nameController: nameController,
               error: error,
-              onChange: (v) {},
+              onChange: (v) {
+                if (error[1].isNotEmpty) {
+                  setState(() {
+                    error[1] = "";
+                  });
+                }
+              },
+              nameController: nameController,
             ),
             Password(
               passwordController: passwordController,
               error: error,
-              onChange: (v) {},
+              onChange: (v) {
+                if (error[2].isNotEmpty) {
+                  setState(() {
+                    error[2] = "";
+                  });
+                }
+              },
             ),
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Checkbox(
+                  value: rememberMe,
+                  onChanged: (final value) {
+                    setState(() {
+                      rememberMe = value!;
+                    });
+                  }),
+              const Text('Remember Me', style: TextStyle(fontSize: 15.0))
+            ]),
             Container(
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
-                  child: const Text('Login'),
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0))),
+                  ),
+                  child:
+                      const Text('Sign In', style: TextStyle(fontSize: 20.0)),
                   onPressed: () {
                     onSubmit();
                   },
@@ -80,11 +130,17 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
   }
 
   Future<void> onSubmit() async {
-    final key = Encrypt.Key.fromUtf8("ProGMsFLo@tiN!ty");
-    final iv = IV.fromUtf8("ProGMsFLo@tiN!ty");
-    final encyptedString = Encrypt.Encrypter(
-      AES(key, mode: Encrypt.AESMode.ecb, padding: "PKCS7"),
-    ).encrypt(passwordController.text, iv: iv);
+    try {
+      validateForm();
+
+      final user = LoginData(
+          un: nameController.text,
+          pwd: passwordController.text.toEncrypted(),
+          loginKey: int.parse(loginController.value.text));
+      // final loginData = userToJson(user);
+
+      authenticate(user);
+    } catch (e) {}
 
     final user = LoginData(
         un: nameController.text,
@@ -94,9 +150,9 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
     authenticate(user);
   }
   authenticate(LoginData loginData) async {
-    final apiResponse = await login(loginData);
-
-    if (apiResponse.error.isEmpty) {
+    final apiResponse = await login(loginData, rememberMe);
+    
+     if (apiResponse.error.isEmpty) {
       if(!mounted) return;
       Navigator.push(
         context,
@@ -106,7 +162,7 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
       setState(() {
         nameController.clear();
         passwordController.clear();
-        passwordController.clear();
+        loginController.clear();
       });
     }
     // If the server did not return a 200 OK response,
@@ -128,7 +184,25 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
         });
       }
     }
+    
+  }
 
-    return null;
+  validateForm() {
+    const errorString = "Please Enter the required field info";
+    if (passwordController.value.text.isEmpty) {
+      setState(() {
+        error[2] = errorString;
+      });
+    }
+    if (nameController.value.text.isEmpty) {
+      setState(() {
+        error[1] = errorString;
+      });
+    }
+    if (loginController.value.text.isEmpty) {
+      setState(() {
+        error[0] = errorString;
+      });
+    }
   }
 }
