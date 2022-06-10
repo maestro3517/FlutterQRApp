@@ -1,10 +1,8 @@
-import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart' as flutterKey;
 import 'package:flutter_qr_app/types/login.dart';
+import 'package:flutter_qr_app/utils.dart';
 import 'Widgets/LoginPassword.dart';
 import 'scannerWithController.dart';
-import 'package:encrypt/encrypt.dart' as Encrypt;
 import 'Widgets/LoginUsername.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -13,16 +11,17 @@ import 'httpClient.dart';
 import 'constants.dart' as constants;
 
 class LoginStatefulWidget extends StatefulWidget {
-  const LoginStatefulWidget({flutterKey.Key? key}) : super(key: key);
+  const LoginStatefulWidget({Key? key}) : super(key: key);
 
   @override
   State<LoginStatefulWidget> createState() => _LoginStatefulWidgetState();
 }
 
 class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController loginController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController loginController = TextEditingController();
+  final LocalStorage storage = LocalStorage(constants.localStorageKey);
 
   var error = List.generate(3, (index) => "");
 
