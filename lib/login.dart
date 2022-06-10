@@ -24,9 +24,24 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
   final LocalStorage storage = LocalStorage(constants.localStorageKey);
 
   var error = List.generate(3, (index) => "");
+  bool rememberMe = false;
+
+  Future<void> init() async {
+    final state = await storage.ready;
+    final creds = storage.getItem("creds");
+    if (creds != null) {
+      setState(() {
+        nameController.text = creds["un"];
+        passwordController.text = creds["pwd"].toString().toDecrypted();
+        loginController.text = creds["loginKey"].toString();
+      });
+    }
+  }
 
   @override
-  void initState() {}
+  void initState() {
+    init();
+  }
 
   @override
   void dispose() {}
