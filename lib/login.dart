@@ -92,13 +92,28 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
                 }
               },
             ),
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Checkbox(
+                  value: rememberMe,
+                  onChanged: (final value) {
+                    setState(() {
+                      rememberMe = value!;
+                    });
+                  }),
+              const Text('Remember Me', style: TextStyle(fontSize: 15.0))
+            ]),
             Container(
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
-                  child: const Text('Login'),
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0))),
+                  ),
+                  child:
+                      const Text('Sign In', style: TextStyle(fontSize: 20.0)),
                   onPressed: () {
-                    login();
+                    onSubmit();
                   },
                 ))
           ],
