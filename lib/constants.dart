@@ -3,9 +3,9 @@ library flutter_qr_app.constants;
 
 import 'dart:ui';
 
-const baseUrl = "https://gms.floatinity.com/gms/";
+const baseUrl = "http://gms.floatinity.com/gms/";
 
-const localStorageKey = "floatinityQR";
+const localStorageKey = "floatinityQR.json";
 
 const tokenKey = "gtk";
 
