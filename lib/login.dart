@@ -1,14 +1,16 @@
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart' as flutterKey;
-import 'package:flutter_qr_app/Widgets/LoginPassword.dart';
-import 'package:flutter_qr_app/types.dart';
-import 'package:flutter_qr_app/scannerWithController.dart';
+import 'package:flutter_qr_app/types/login.dart';
+import 'Widgets/LoginPassword.dart';
+import 'scannerWithController.dart';
 import 'package:encrypt/encrypt.dart' as Encrypt;
-import 'package:flutter_qr_app/Widgets/LoginUsername.dart';
+import 'Widgets/LoginUsername.dart';
+import 'package:localstorage/localstorage.dart';
 
 import 'Widgets/LoginKey.dart';
-import 'http/httpMethods.dart';
+import 'httpClient.dart';
+import 'constants.dart' as constants;
 
 class LoginStatefulWidget extends StatefulWidget {
   const LoginStatefulWidget({flutterKey.Key? key}) : super(key: key);
