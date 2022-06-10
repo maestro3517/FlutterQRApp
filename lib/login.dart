@@ -171,5 +171,22 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
     }
 
     return null;
+  validateForm() {
+    const errorString = "Please Enter the required field info";
+    if (passwordController.value.text.isEmpty) {
+      setState(() {
+        error[2] = errorString;
+      });
+    }
+    if (nameController.value.text.isEmpty) {
+      setState(() {
+        error[1] = errorString;
+      });
+    }
+    if (loginController.value.text.isEmpty) {
+      setState(() {
+        error[0] = errorString;
+      });
+    }
   }
 }
