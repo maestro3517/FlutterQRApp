@@ -3,6 +3,8 @@ import 'package:flutter_qr_app/widgets/MWDataTableScreen.dart';
 import 'package:flutter_qr_app/widgets/MWGridViewScreen.dart';
 import 'package:flutter_qr_app/widgets/WAQrScannerScreen.dart';
 
+import 'login.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -15,6 +17,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      routes: {
+        '/login': (context) => const LoginStatefulWidget(),
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //
