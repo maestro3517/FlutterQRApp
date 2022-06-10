@@ -120,23 +120,22 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
         ));
   }
 
-  Future<void> login() async {
-    final key = Encrypt.Key.fromUtf8("ProGMsFLo@tiN!ty");
-    final iv = IV.fromUtf8("ProGMsFLo@tiN!ty");
-    final encyptedString = Encrypt.Encrypter(
-      AES(key, mode: Encrypt.AESMode.ecb, padding: "PKCS7"),
-    ).encrypt(passwordController.text, iv: iv);
+  Future<void> onSubmit() async {
+    try {
+      validateForm();
 
-    final user = User(
-        un: nameController.text,
-        pwd: encyptedString.base64,
-        loginKey: loginController.value as int);
-    final x = userToJson(user);
+      final user = LoginData(
+          un: nameController.text,
+          pwd: passwordController.text.toEncrypted(),
+          loginKey: int.parse(loginController.value.text));
+      // final loginData = userToJson(user);
 
-    authenticate(x);
+      authenticate(user);
+    } catch (e) {}
   }
-  authenticate(x) async {
-    final apiResponse = await httpLogin(x);
+
+  authenticate(user) async {
+    final apiResponse = await login(user, rememberMe);
 
     if (apiResponse.error.isEmpty) {
       Navigator.push(
@@ -147,7 +146,7 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
       setState(() {
         nameController.clear();
         passwordController.clear();
-        passwordController.clear();
+        loginController.clear();
       });
     }
     // If the server did not return a 200 OK response,
@@ -169,8 +168,8 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
         });
       }
     }
+  }
 
-    return null;
   validateForm() {
     const errorString = "Please Enter the required field info";
     if (passwordController.value.text.isEmpty) {
