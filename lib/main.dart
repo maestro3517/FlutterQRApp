@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_app/widgets/MWDataTableScreen.dart';
 import 'package:flutter_qr_app/widgets/MWGridViewScreen.dart';
+import 'package:flutter_qr_app/widgets/WAQrScannerScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -90,6 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
     //     child: const Icon(Icons.add),
     //   ), // This trailing comma makes auto-formatting nicer for build methods.
     // );
-    return MWGridViewScreen();
+    return WAQrScannerScreen();
   }
 }
