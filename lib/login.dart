@@ -2,13 +2,13 @@ import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart' as flutterKey;
 import 'package:flutter_qr_app/Widgets/LoginPassword.dart';
-import 'package:flutter_qr_app/types.dart';
-import 'package:flutter_qr_app/scannerWithController.dart';
 import 'package:encrypt/encrypt.dart' as Encrypt;
 import 'package:flutter_qr_app/Widgets/LoginUsername.dart';
+import 'package:flutter_qr_app/types/login.dart';
+import 'package:flutter_qr_app/widgets/WAQrScannerScreen.dart';
 
 import 'Widgets/LoginKey.dart';
-import 'http/httpMethods.dart';
+import 'httpClient.dart';
 
 class LoginStatefulWidget extends StatefulWidget {
   const LoginStatefulWidget({flutterKey.Key? key}) : super(key: key);
@@ -25,10 +25,18 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
   var error = List.generate(3, (index) => "");
 
   @override
-  void initState() {}
+  void initState() {
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //       builder: (context) => WAQrScannerScreen()),
+    // );
+  }
 
   @override
-  void dispose() {}
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,36 +72,36 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
                 child: ElevatedButton(
                   child: const Text('Login'),
                   onPressed: () {
-                    login();
+                    onSubmit();
                   },
                 ))
           ],
         ));
   }
 
-  Future<void> login() async {
+  Future<void> onSubmit() async {
     final key = Encrypt.Key.fromUtf8("ProGMsFLo@tiN!ty");
     final iv = IV.fromUtf8("ProGMsFLo@tiN!ty");
     final encyptedString = Encrypt.Encrypter(
       AES(key, mode: Encrypt.AESMode.ecb, padding: "PKCS7"),
     ).encrypt(passwordController.text, iv: iv);
 
-    final user = User(
+    final user = LoginData(
         un: nameController.text,
         pwd: encyptedString.base64,
         loginKey: loginController.value as int);
-    final x = userToJson(user);
 
-    authenticate(x);
+    authenticate(user);
   }
-  authenticate(x) async {
-    final apiResponse = await httpLogin(x);
+  authenticate(LoginData loginData) async {
+    final apiResponse = await login(loginData);
 
     if (apiResponse.error.isEmpty) {
+      if(!mounted) return;
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => const BarcodeScannerWithController()),
+            builder: (context) => WAQrScannerScreen()),
       );
       setState(() {
         nameController.clear();
