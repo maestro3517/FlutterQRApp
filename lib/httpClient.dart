@@ -19,24 +19,23 @@ class LoginResponse {
   const LoginResponse(this.status, this.error);
 }
 
-Future<void> setHeaders(
-    HttpClientRequest req, [Map<String, String>? headers]) async {
+Future<void> setHeaders(HttpClientRequest req,
+    [Map<String, String>? headers]) async {
   for (final key in constants.headers.keys) {
-    if (constants.headers.containsValue(key)) {
-      final value = constants.headers[key];
-      req.headers.set(key, value!);
+    final value = constants.headers[key];
+    if (value != null) {
+      req.headers.set(key, value);
     }
   }
 
-  if(headers != null) {
+  if (headers != null) {
     for (final key in headers.keys) {
-      if (headers.containsValue(key)) {
-        final value = headers[key];
-        req.headers.set(key, value!);
+      final value = headers[key];
+      if (value != null) {
+        req.headers.set(key, value);
       }
     }
   }
-
 }
 
 Future<LoginResponse> login(LoginData login) async {
@@ -84,15 +83,17 @@ Future<QrData> getScanData(String qrCode) async {
 
   final token = storage.getItem('token').toString();
 
-  final Map<String,String> headers = {};
+  final Map<String, String> headers = {};
 
-  if (token.isNotEmpty) {
+  if (token.isNotEmpty && token != "null") {
     headers[constants.tokenKey] = token;
   }
 
-  await setHeaders(req,headers.isEmpty ? null : headers);
+  await setHeaders(req, headers.isEmpty ? null : headers);
 
   final res = await req.close();
+
+  // final x = (await res.transform(utf8.decoder).join());
 
   final scanData = (await res.transform(utf8.decoder).join()).parseScanData();
 
