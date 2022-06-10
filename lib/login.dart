@@ -48,31 +48,49 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(10),
+    return Container(
+        padding: const EdgeInsets.fromLTRB(10, 100, 10, 0),
+        alignment: Alignment.center,
         child: ListView(
           children: <Widget>[
             Container(
                 alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
                 child: const Text(
-                  'Sign in',
+                  'Sign In',
                   style: TextStyle(fontSize: 30),
                 )),
             LoginKey(
-              loginController: loginController,
-              error: error,
-              onChange: (v) {},
-            ),
+                loginController: loginController,
+                error: error,
+                onChange: (v) {
+                  if (error[0].isNotEmpty) {
+                    setState(() {
+                      error[0] = "";
+                    });
+                  }
+                }),
             UserName(
-              nameController: nameController,
               error: error,
-              onChange: (v) {},
+              onChange: (v) {
+                if (error[1].isNotEmpty) {
+                  setState(() {
+                    error[1] = "";
+                  });
+                }
+              },
+              nameController: nameController,
             ),
             Password(
               passwordController: passwordController,
               error: error,
-              onChange: (v) {},
+              onChange: (v) {
+                if (error[2].isNotEmpty) {
+                  setState(() {
+                    error[2] = "";
+                  });
+                }
+              },
             ),
             Container(
                 height: 50,
