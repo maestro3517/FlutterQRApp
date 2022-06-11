@@ -87,7 +87,7 @@ class Data {
   String rangeOrSize;
   String accuracy;
   String sourceVendor;
-  int guageCost;
+  double guageCost;
   String gaugeDesc;
   String storageLoc;
   String gaugeStatus;
@@ -104,11 +104,11 @@ class Data {
   dynamic billId;
   dynamic imageId;
   String gaugeProfile;
-  dynamic lastMsaDate;
-  dynamic msaFrequency;
-  dynamic nextMsaDate;
+  int lastMsaDate;
+  int msaFrequency;
+  int nextMsaDate;
   int calibFrequency;
-  dynamic qr;
+  String qr;
 
   factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
 

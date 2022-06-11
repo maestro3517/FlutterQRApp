@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter/src/foundation/key.dart' as flutterKey;
+import 'package:flutter_qr_app/Widgets/LoginPassword.dart';
+import 'package:encrypt/encrypt.dart' as Encrypt;
+import 'package:flutter_qr_app/Widgets/LoginUsername.dart';
 import 'package:flutter_qr_app/types/login.dart';
+import 'package:flutter_qr_app/widgets/WAQrScannerScreen.dart';
+
 import 'package:flutter_qr_app/utils.dart';
 import 'Widgets/LoginPassword.dart';
 import 'scannerWithController.dart';
@@ -44,7 +51,9 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
   }
 
   @override
-  void dispose() {}
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,16 +141,23 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
 
       authenticate(user);
     } catch (e) {}
+
+    final user = LoginData(
+        un: nameController.text,
+        pwd: encyptedString.base64,
+        loginKey: loginController.value as int);
+
+    authenticate(user);
   }
-
-  authenticate(user) async {
-    final apiResponse = await login(user, rememberMe);
-
-    if (apiResponse.error.isEmpty) {
+  authenticate(LoginData loginData) async {
+    final apiResponse = await login(loginData, rememberMe);
+    
+     if (apiResponse.error.isEmpty) {
+      if(!mounted) return;
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => const BarcodeScannerWithController()),
+            builder: (context) => WAQrScannerScreen()),
       );
       setState(() {
         nameController.clear();
@@ -168,6 +184,7 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
         });
       }
     }
+    
   }
 
   validateForm() {

@@ -86,13 +86,15 @@ Future<QrData> getScanData(String qrCode) async {
 
   final Map<String, String> headers = {};
 
-  if (token.isNotEmpty) {
+  if (token.isNotEmpty && token != "null") {
     headers[constants.tokenKey] = token;
   }
 
   await setHeaders(req, headers.isEmpty ? null : headers);
 
   final res = await req.close();
+
+  // final x = (await res.transform(utf8.decoder).join());
 
   final scanData = (await res.transform(utf8.decoder).join()).parseScanData();
 
