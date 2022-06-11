@@ -5,8 +5,9 @@ import 'package:flutter_qr_app/widgets/WAQrScannerScreen.dart';
 
 import 'login.dart';
 
+import 'Widgets/SplashScreen.dart';
 void main() {
-  runApp(const FlutterApp());
+  runApp(const SplashScreenWidget());
 }
 
 class FlutterApp extends StatelessWidget {
