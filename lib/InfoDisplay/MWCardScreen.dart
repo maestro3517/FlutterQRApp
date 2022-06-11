@@ -1,0 +1,69 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class QrDataDisplay extends StatefulWidget {
+  const QrDataDisplay({Key? key}) : super(key: key);
+
+  @override
+  QrDataDisplayState createState() => QrDataDisplayState();
+}
+
+class QrDataDisplayState extends State<QrDataDisplay> {
+
+  late Map<String,String> data;
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  init() async {
+    //
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) super.setState(fn);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(title: const Text("Gauge Information")),
+          body: Stack(
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+                alignment: Alignment.topCenter,
+                color: Colors.white54,
+                child: const Icon(
+                  CupertinoIcons.gauge,
+                  size: 150,
+                ),
+              ),
+              ListView.builder(
+                padding: const EdgeInsets.fromLTRB(0, 200, 0, 10),
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) {
+                  return Card(
+                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    borderOnForeground: true,
+                    child: ListTile(
+                      tileColor: Colors.white54,
+                      shape: RoundedRectangleBorder(
+                          side: const BorderSide(color: Colors.grey, width: 1),
+                          borderRadius: BorderRadius.circular(5)),
+                      title: Text(data.keys.elementAt(index)),
+                      trailing: Text(data.values.elementAt(index).toString()),
+                    ),
+                  );
+                },
+                itemCount: data.length,
+              )
+            ],
+          ),
+        ));
+  }
+}
