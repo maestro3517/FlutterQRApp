@@ -98,7 +98,7 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
           TextButton(
             onPressed: () {
               Navigator.of(context).popAndPushNamed('/login');
-              storage.clear();
+              logout();
             },
             child: const Text('Yes'),
           ),
@@ -171,7 +171,7 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
               child: Icon(Icons.close, color: primaryColor),
             ).onTap(() {
                 Navigator.of(context).popAndPushNamed('/login');
-                storage.clear();
+                logout();
             }),
           ).paddingBottom(60),
         ],
