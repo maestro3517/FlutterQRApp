@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_app/httpClient.dart';
-import 'package:flutter_qr_app/widgets/MWDataTableScreen.dart';
+import 'package:flutter_qr_app/widgets/QRDataDisplay.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -75,7 +75,7 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => MWDataTableScreen()),
+            builder: (context) => QrDataDisplay(data:data)),
       );
     }
 
@@ -89,7 +89,10 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
         content: const Text('Do you want to logout'),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () {
+              Navigator.of(context).pop(false);
+              logout();
+            },
             child: const Text('No'),
           ),
           TextButton(
@@ -109,8 +112,12 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
     setState(() {
       this.controller = controller;
     });
+
+    // call resumeCamera fucntion
+    controller.resumeCamera();
+
     controller.scannedDataStream.listen((scanData) {
-      final code = scanData.code;
+      String? code = scanData.code?.replaceAll(RegExp(r'[^0-9]'),'');
       if(code != null && code.isNotEmpty) {
         processCode(code);
       }
@@ -163,11 +170,14 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
               decoration: boxDecorationWithRoundedCorners(borderRadius: radius(30), backgroundColor: Colors.white),
               child: Icon(Icons.close, color: primaryColor),
             ).onTap(() {
-              finish(context);
+                Navigator.of(context).popAndPushNamed('/login');
+                storage.clear();
             }),
           ).paddingBottom(60),
         ],
       ),
     ));
   }
+
+
 }
