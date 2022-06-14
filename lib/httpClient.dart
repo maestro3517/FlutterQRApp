@@ -39,7 +39,8 @@ Future<void> setHeaders(HttpClientRequest req,
 }
 
 Future<LoginResponse> login(LoginData login, bool rememberMe) async {
-  final req = await httpClient.postUrl(Uri.parse("${constants.baseUrl}/gauth/login"));
+  final req =
+      await httpClient.postUrl(Uri.parse("${constants.baseUrl}/gauth/login"));
 
   await setHeaders(req);
 
@@ -58,8 +59,9 @@ Future<LoginResponse> login(LoginData login, bool rememberMe) async {
     if (status == "SUCCESS") {
       final token = res.headers[constants.tokenKey];
       await storage.setItem('token', token);
+      await storage.setItem('loginKey', login.loginKey.toString());
 
-      if(rememberMe){
+      if (rememberMe) {
         await storage.setItem('creds', login);
       }
     } else {
@@ -78,11 +80,12 @@ Future<LoginResponse> login(LoginData login, bool rememberMe) async {
   }
 }
 
-Future<QrData> getScanData(String qrCode) async {
-  final req = await httpClient
-      .getUrl(Uri.parse("${constants.baseUrl}gauge/read/qr/?scandata=$qrCode"));
+Future<bool> checkToken(String key) async{
+  final loginKey = storage.getItem("loginKey");
+  final req = await httpClient.getUrl(Uri.parse(
+      "${constants.baseUrl}gauge/read/qr/?scandata=${key}_$loginKey"));
 
-  final token = storage.getItem('token').toString();
+  final token = storage.getItem('token')[0].toString();
 
   final Map<String, String> headers = {};
 
@@ -91,7 +94,33 @@ Future<QrData> getScanData(String qrCode) async {
   }
 
   await setHeaders(req, headers.isEmpty ? null : headers);
+  await req.flush();
+  final res = await req.close();
 
+  if(res.statusCode==403){
+    return false;
+  }
+
+  else {
+    return true;
+  }
+}
+
+Future<QrData> getScanData(String qrCode) async {
+  final loginKey = storage.getItem("loginKey");
+  final req = await httpClient.getUrl(Uri.parse(
+      "${constants.baseUrl}gauge/read/qr/?scandata=${qrCode}_$loginKey"));
+
+  final token = storage.getItem('token')[0].toString();
+
+  final Map<String, String> headers = {};
+
+  if (token.isNotEmpty && token != "null") {
+    headers[constants.tokenKey] = token;
+  }
+
+  await setHeaders(req, headers.isEmpty ? null : headers);
+  await req.flush();
   final res = await req.close();
 
   // final x = (await res.transform(utf8.decoder).join());
@@ -99,4 +128,9 @@ Future<QrData> getScanData(String qrCode) async {
   final scanData = (await res.transform(utf8.decoder).join()).parseScanData();
 
   return scanData;
+}
+
+void logout() async {
+  await storage.deleteItem("token");
+  await storage.deleteItem("loginKey");
 }
