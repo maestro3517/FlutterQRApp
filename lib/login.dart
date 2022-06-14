@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/src/foundation/key.dart' as flutterKey;
 import 'package:flutter_qr_app/Widgets/LoginPassword.dart';
-import 'package:encrypt/encrypt.dart' as Encrypt;
 import 'package:flutter_qr_app/Widgets/LoginUsername.dart';
 import 'package:flutter_qr_app/types/login.dart';
 import 'package:flutter_qr_app/widgets/WAQrScannerScreen.dart';
 
 import 'package:flutter_qr_app/utils.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'Widgets/LoginPassword.dart';
-import 'scannerWithController.dart';
 import 'Widgets/LoginUsername.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -57,6 +55,8 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor=Theme.of(context).primaryColor;
+
     return Container(
         padding: const EdgeInsets.fromLTRB(10, 100, 10, 0),
         alignment: Alignment.center,
@@ -118,6 +118,7 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0))),
+                    backgroundColor: MaterialStateProperty.all(primaryColor),
                   ),
                   child:
                       const Text('Sign In', style: TextStyle(fontSize: 20.0)),
@@ -141,13 +142,6 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
 
       authenticate(user);
     } catch (e) {}
-
-    final user = LoginData(
-        un: nameController.text,
-        pwd: encyptedString.base64,
-        loginKey: loginController.value as int);
-
-    authenticate(user);
   }
   authenticate(LoginData loginData) async {
     final apiResponse = await login(loginData, rememberMe);
