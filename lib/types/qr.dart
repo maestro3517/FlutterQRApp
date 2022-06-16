@@ -70,7 +70,7 @@ class Data {
     required this.msaFrequency,
     required this.nextMsaDate,
     required this.calibFrequency,
-    required this.qr,
+    // required this.qr,
   });
 
   int id;
@@ -108,7 +108,7 @@ class Data {
   int msaFrequency;
   int nextMsaDate;
   int calibFrequency;
-  String qr;
+  // String qr;
 
   factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
 
@@ -150,7 +150,7 @@ class Data {
     msaFrequency: json["msaFrequency"],
     nextMsaDate: json["nextMsaDate"],
     calibFrequency: json["calibFrequency"],
-    qr: json["qr"],
+    // qr: json["qr"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -189,6 +189,6 @@ class Data {
     "msaFrequency": msaFrequency,
     "nextMsaDate": nextMsaDate,
     "calibFrequency": calibFrequency,
-    "qr": qr,
+    // "qr": qr,
   };
 }
