@@ -76,7 +76,7 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
         context,
         MaterialPageRoute(
             builder: (context) => QrDataDisplay(data:data)),
-      );
+      ).then((value) => setState(() async {await controller?.resumeCamera(); }));
     }
 
   }
