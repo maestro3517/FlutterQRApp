@@ -91,7 +91,6 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop(false);
-              logout();
             },
             child: const Text('No'),
           ),
@@ -143,22 +142,10 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
             children: [
               30.height,
               Align(
-                alignment: Alignment.topLeft,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  margin: const EdgeInsets.all(8),
-                  decoration: boxDecorationWithRoundedCorners(
-                    backgroundColor: Colors.transparent,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: const Icon(Icons.arrow_back, color: Colors.white),
-                ).onTap(() {
-                  finish(context);
-                }).paddingOnly(top: 8, right: 16),
-              ),
-              30.height,
-              Text('Hold  your Card inside the frame', style: boldTextStyle(color: Colors.white, size: 18)),
+                alignment: Alignment.center,
+                heightFactor: 5,
+                child:  Text('Hold  your Card inside the frame', style: boldTextStyle(color: Colors.white, size: 18)),
+              )
             ],
           ),
           Align(
@@ -169,9 +156,8 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
               padding: const EdgeInsets.all(8),
               decoration: boxDecorationWithRoundedCorners(borderRadius: radius(30), backgroundColor: Colors.white),
               child: Icon(Icons.close, color: primaryColor),
-            ).onTap(() {
-                Navigator.of(context).popAndPushNamed('/login');
-                logout();
+            ).onTap(() async{
+              await _onWillPop();
             }),
           ).paddingBottom(60),
         ],
