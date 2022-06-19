@@ -55,79 +55,82 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor=Theme.of(context).primaryColor;
+    final primaryColor = Theme.of(context).primaryColor;
 
-    return Container(
-        padding: const EdgeInsets.fromLTRB(10, 100, 10, 0),
-        alignment: Alignment.center,
-        child: ListView(
-          children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
-                child: const Text(
-                  'Sign In',
-                  style: TextStyle(fontSize: 30),
-                )),
-            LoginKey(
-                loginController: loginController,
-                error: error,
-                onChange: (v) {
-                  if (error[0].isNotEmpty) {
-                    setState(() {
-                      error[0] = "";
-                    });
-                  }
-                }),
-            UserName(
-              error: error,
-              onChange: (v) {
-                if (error[1].isNotEmpty) {
-                  setState(() {
-                    error[1] = "";
-                  });
-                }
-              },
-              nameController: nameController,
-            ),
-            Password(
-              passwordController: passwordController,
-              error: error,
-              onChange: (v) {
-                if (error[2].isNotEmpty) {
-                  setState(() {
-                    error[2] = "";
-                  });
-                }
-              },
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Checkbox(
-                  value: rememberMe,
-                  onChanged: (final value) {
-                    setState(() {
-                      rememberMe = value!;
-                    });
-                  }),
-              const Text('Remember Me', style: TextStyle(fontSize: 15.0))
-            ]),
-            Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0))),
-                    backgroundColor: MaterialStateProperty.all(primaryColor),
-                  ),
-                  child:
-                      const Text('Sign In', style: TextStyle(fontSize: 20.0)),
-                  onPressed: () {
-                    onSubmit();
+    return WillPopScope(
+        onWillPop: false,
+        child: Container(
+            padding: const EdgeInsets.fromLTRB(10, 100, 10, 0),
+            alignment: Alignment.center,
+            child: ListView(
+              children: <Widget>[
+                Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+                    child: const Text(
+                      'Sign In',
+                      style: TextStyle(fontSize: 30),
+                    )),
+                LoginKey(
+                    loginController: loginController,
+                    error: error,
+                    onChange: (v) {
+                      if (error[0].isNotEmpty) {
+                        setState(() {
+                          error[0] = "";
+                        });
+                      }
+                    }),
+                UserName(
+                  error: error,
+                  onChange: (v) {
+                    if (error[1].isNotEmpty) {
+                      setState(() {
+                        error[1] = "";
+                      });
+                    }
                   },
-                ))
-          ],
-        ));
+                  nameController: nameController,
+                ),
+                Password(
+                  passwordController: passwordController,
+                  error: error,
+                  onChange: (v) {
+                    if (error[2].isNotEmpty) {
+                      setState(() {
+                        error[2] = "";
+                      });
+                    }
+                  },
+                ),
+                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Checkbox(
+                      value: rememberMe,
+                      onChanged: (final value) {
+                        setState(() {
+                          rememberMe = value!;
+                        });
+                      }),
+                  const Text('Remember Me', style: TextStyle(fontSize: 15.0))
+                ]),
+                Container(
+                    height: 50,
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0))),
+                        backgroundColor:
+                            MaterialStateProperty.all(primaryColor),
+                      ),
+                      child: const Text('Sign In',
+                          style: TextStyle(fontSize: 20.0)),
+                      onPressed: () {
+                        onSubmit();
+                      },
+                    ))
+              ],
+            )));
   }
 
   Future<void> onSubmit() async {
@@ -143,15 +146,15 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
       authenticate(user);
     } catch (e) {}
   }
+
   authenticate(LoginData loginData) async {
     final apiResponse = await login(loginData, rememberMe);
-    
-     if (apiResponse.error.isEmpty) {
-      if(!mounted) return;
+
+    if (apiResponse.error.isEmpty) {
+      if (!mounted) return;
       Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => WAQrScannerScreen()),
+        MaterialPageRoute(builder: (context) => WAQrScannerScreen()),
       );
       setState(() {
         nameController.clear();
@@ -178,7 +181,6 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
         });
       }
     }
-    
   }
 
   validateForm() {
