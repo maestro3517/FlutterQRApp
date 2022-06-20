@@ -3,7 +3,7 @@ library flutter_qr_app.constants;
 import 'dart:ui';
 import 'package:encrypt/encrypt.dart';
 
-const baseUrl = "http://gms.floatinity.com/gms/";
+const baseUrl = String.fromEnvironment('BASE_URL', defaultValue: '');
 
 const localStorageKey = "floatinityQR.json";
 
@@ -27,5 +27,7 @@ const color = {
   900: Color.fromRGBO(152, 90, 237, 1),
 };
 
-Key aesKey = Key.fromUtf8("ProGMsFLo@tiN!ty");
-IV iv = IV.fromUtf8("ProGMsFLo@tiN!ty");
+const key=String.fromEnvironment('KEY', defaultValue: '');
+
+Key aesKey = Key.fromUtf8(key);
+IV iv = IV.fromUtf8(key);
