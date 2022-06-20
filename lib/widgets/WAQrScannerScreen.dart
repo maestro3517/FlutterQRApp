@@ -97,6 +97,7 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
           TextButton(
             onPressed: () {
               Navigator.of(context).popAndPushNamed('/login');
+              controller?.pauseCamera();
               logout();
             },
             child: const Text('Yes'),
