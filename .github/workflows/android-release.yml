@@ -51,8 +51,8 @@ jobs:
         path: version.txt
     - run: flutter pub get
     # - run: flutter test
-    - run: flutter build apk --release --split-per-abi
-    - run: flutter build appbundle
+    - run: flutter build apk --dart-define=BASE_URL=${{secrets.BASE_URL}} --dart-define=KEY=${{secrets.KEY}} --release --split-per-abi
+    - run: flutter build appbundle --dart-define=BASE_URL=${{secrets.BASE_URL}} --dart-define=KEY=${{secrets.KEY}}
     - name: Create a Release in GitHub
       uses: ncipollo/release-action@v1
       with:
