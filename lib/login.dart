@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_qr_app/Widgets/LoginPassword.dart';
-import 'package:flutter_qr_app/Widgets/LoginUsername.dart';
+import 'package:flutter_qr_app/widgets/LoginPassword.dart';
+import 'package:flutter_qr_app/widgets/LoginUsername.dart';
 import 'package:flutter_qr_app/types/login.dart';
 import 'package:flutter_qr_app/widgets/WAQrScannerScreen.dart';
 
 import 'package:flutter_qr_app/utils.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'Widgets/LoginPassword.dart';
-import 'Widgets/LoginUsername.dart';
+import 'widgets/LoginPassword.dart';
+import 'widgets/LoginUsername.dart';
 import 'package:localstorage/localstorage.dart';
 
-import 'Widgets/LoginKey.dart';
+import 'widgets/LoginKey.dart';
 import 'httpClient.dart';
 import 'constants.dart' as constants;
 
