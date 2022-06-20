@@ -58,7 +58,9 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
     final primaryColor = Theme.of(context).primaryColor;
 
     return WillPopScope(
-        onWillPop: false,
+        onWillPop: () {
+          return Future.value(false);
+        },
         child: Container(
             padding: const EdgeInsets.fromLTRB(10, 100, 10, 0),
             alignment: Alignment.center,
