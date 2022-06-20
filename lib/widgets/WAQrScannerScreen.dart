@@ -8,10 +8,6 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter_qr_app/constants.dart' as constants;
 
-const WAPrimaryColor = Color(0xFF6C56F9);
-const WAAccentColor = Color(0xFF26C884);
-
-
 class WAQrScannerScreen extends StatefulWidget {
   static String tag = '/WAQrScannerScreen';
 
