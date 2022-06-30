@@ -37,12 +37,14 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
   }
 
   init() async {
-    setStatusBarColor(Colors.transparent, statusBarIconBrightness: Brightness.light);
+    setStatusBarColor(Colors.transparent,
+        statusBarIconBrightness: Brightness.light);
   }
 
   @override
   void dispose() {
-    setStatusBarColor(Colors.transparent, statusBarIconBrightness: Brightness.dark);
+    setStatusBarColor(Colors.transparent,
+        statusBarIconBrightness: Brightness.dark);
     controller?.dispose();
     super.dispose();
   }
@@ -65,43 +67,16 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
     await controller?.pauseCamera();
     final scanData = await getScanData(qrCode);
 
-    if(scanData.gmsErrors.isEmpty) {
+    if (scanData.gmsErrors.isEmpty) {
       final data = scanData.data;
       if (!mounted) return;
       Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => QrDataDisplay(data:data)),
-      ).then((value) => setState(() async {await controller?.resumeCamera(); }));
+        MaterialPageRoute(builder: (context) => QrDataDisplay(data: data)),
+      ).then((value) => setState(() async {
+            await controller?.resumeCamera();
+          }));
     }
-
-  }
-
-  Future<bool> _onWillPop() async {
-    return (await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Are you sure?'),
-        content: const Text('Do you want to logout'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(false);
-            },
-            child: const Text('No'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).popAndPushNamed('/login');
-              controller?.pauseCamera();
-              logout();
-            },
-            child: const Text('Yes'),
-          ),
-        ],
-      ),
-    )) ??
-        false;
   }
 
   void _onQRViewCreated(QRViewController controller) {
@@ -109,12 +84,12 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
       this.controller = controller;
     });
 
-    // call resumeCamera fucntion
+    // call resumeCamera function
     controller.resumeCamera();
 
     controller.scannedDataStream.listen((scanData) {
-      String? code = scanData.code?.replaceAll(RegExp(r'[^0-9]'),'');
-      if(code != null && code.isNotEmpty) {
+      String? code = scanData.code?.replaceAll(RegExp(r'[^0-9]'), '');
+      if (code != null && code.isNotEmpty) {
         processCode(code);
       }
       setState(() {
@@ -130,37 +105,35 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).primaryColor;
-    return WillPopScope(onWillPop: _onWillPop, child: Scaffold(
-      body: Stack(
-        children: [
-          _buildQrView(context),
-          Column(
+       return( Scaffold(
+          body: Stack(
             children: [
-              30.height,
-              Align(
-                alignment: Alignment.center,
-                heightFactor: 5,
-                child:  Text('Hold  your Card inside the frame', style: boldTextStyle(color: Colors.white, size: 18)),
+              _buildQrView(context),
+              Column(
+                children: [
+                  30.height,
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      margin: const EdgeInsets.all(8),
+                      decoration: boxDecorationWithRoundedCorners(
+                        backgroundColor: Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.grey),
+                      ),
+                      child: const Icon(Icons.arrow_back, color: Colors.white),
+                    ).onTap(() {
+                      finish(context);
+                    }).paddingOnly(top: 18, right: 16),
+                  ),
+                  Text('Hold your QR inside the frame',
+                      style: boldTextStyle(color: Colors.white, size: 18)).paddingOnly(top: 18),
+                ],
               )
             ],
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 60,
-              width: 60,
-              padding: const EdgeInsets.all(8),
-              decoration: boxDecorationWithRoundedCorners(borderRadius: radius(30), backgroundColor: Colors.white),
-              child: Icon(Icons.close, color: primaryColor),
-            ).onTap(() async{
-              await _onWillPop();
-            }),
-          ).paddingBottom(60),
-        ],
-      ),
-    ));
+        )
+    );
   }
-
-
 }
