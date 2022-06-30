@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_qr_app/Widgets/LandingPage.dart';
 
 import 'package:flutter_qr_app/widgets/LoginPassword.dart';
 import 'package:flutter_qr_app/widgets/LoginUsername.dart';
 import 'package:flutter_qr_app/types/login.dart';
-import 'package:flutter_qr_app/widgets/WAQrScannerScreen.dart';
 
 import 'package:flutter_qr_app/utils.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'widgets/LoginPassword.dart';
 import 'widgets/LoginUsername.dart';
 import 'package:localstorage/localstorage.dart';
@@ -152,11 +151,17 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
   authenticate(LoginData loginData) async {
     final apiResponse = await login(loginData, rememberMe);
 
+    //
+
+
     if (apiResponse.error.isEmpty) {
+
+      //get UserName from Email
+      final userName = nameController.text.split("@")[0];
       if (!mounted) return;
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => WAQrScannerScreen()),
+        MaterialPageRoute(builder: (context) => LandingPage(userId: userName)),
       );
       setState(() {
         nameController.clear();
