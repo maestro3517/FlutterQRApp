@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_app/types/qr.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class QrDataDisplay extends StatefulWidget {
   final Data data;
@@ -40,7 +41,7 @@ class QrDataDisplayState extends State<QrDataDisplay> {
         centerTitle: true,
         leading: InkWell(
           onTap: () {
-            Navigator.pop(context);
+           finish(context);
           },
           child: const Icon(
             Icons.arrow_back_ios,
