@@ -483,7 +483,7 @@ packages:
     description:
       path: "."
       ref: implement_analyze_qr_from_image
-      resolved-ref: "66a1ebfcd049ed46bea99e77ed0808763f2ce36d"
+      resolved-ref: "8e380269b434a29197711e83969c87ba46d3987d"
       url: "https://github.com/mdrokz/qr_code_scanner.git"
     source: git
     version: "1.0.0"
