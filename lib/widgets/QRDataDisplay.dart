@@ -25,6 +25,21 @@ class QrDataDisplayState extends State<QrDataDisplay> {
 
   init() async {
     //
+    final date = DateTime.now();
+    //convert timestamp String to DateTime
+    final dueCalibTime =
+        DateTime.fromMillisecondsSinceEpoch(data['nextCalibrationDate']);
+    final dueMsaTime = DateTime.fromMillisecondsSinceEpoch(data['nextMsaDate']);
+
+    //calculate current date minus data.nextCalibrationDate
+    dueCalibDate = date.difference(dueCalibTime).inDays.toString();
+
+    //calculate current date minus data.nextMsaDate
+    dueMsaDate = date.difference(dueMsaTime).inDays.toString();
+
+    //decode base64 string to Image file
+    // final decodedImage = base64Decode(data['gaugeProfile']);
+    // print(decodedImage);
   }
 
   @override
