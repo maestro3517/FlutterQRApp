@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_qr_app/constants.dart';
 import 'package:flutter_qr_app/types/qr.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class QrDataDisplay extends StatefulWidget {
   final Data data;
@@ -24,12 +28,14 @@ class QrDataDisplayState extends State<QrDataDisplay> {
     super.initState();
     setState(() {
       data = widget.data.toJson();
+      for (final qrKey in excludeQrData) {
+        modData[qrKey] = data[qrKey];
+      }
     });
     init();
   }
 
   init() async {
-    //
     final date = DateTime.now();
     //convert timestamp String to DateTime
     final dueCalibTime =
@@ -56,7 +62,7 @@ class QrDataDisplayState extends State<QrDataDisplay> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Gauge Information"),
+        title: const Text("Gauge Profile"),
         centerTitle: true,
         leading: InkWell(
           onTap: () {
@@ -68,36 +74,70 @@ class QrDataDisplayState extends State<QrDataDisplay> {
           ),
         ),
       ),
-      body: Stack(
+      body: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-            alignment: Alignment.topCenter,
-            color: Colors.white54,
-            child: const Icon(
-              CupertinoIcons.gauge,
-              size: 150,
-            ),
-          ),
-          ListView.builder(
-            padding: const EdgeInsets.fromLTRB(0, 200, 0, 10),
-            scrollDirection: Axis.vertical,
-            itemBuilder: (context, index) {
-              return Card(
-                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                borderOnForeground: true,
-                child: ListTile(
-                  tileColor: Colors.white54,
-                  shape: RoundedRectangleBorder(
-                      side: const BorderSide(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  title: Text(data.keys.elementAt(index)),
-                  trailing: Text(data.values.elementAt(index).toString()),
-                ),
-              );
-            },
-            itemCount: data.length,
-          )
+          Image.memory(base64Decode(image), fit: BoxFit.cover).expand(),
+          Card(
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: SizedBox(
+                          child: GridView.count(
+                    primary: false,
+                    padding: const EdgeInsets.all(30),
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 4,
+                    children: <Widget>[
+                      Text(
+                        "Gauge Status: ${data['gaugeStatus']}",
+                        style: data['guageStatus'] == 'ACTIVE'
+                            ? boldTextStyle(color: Colors.green)
+                            : boldTextStyle(color: Colors.red),
+                      ),
+                      Text(
+                        "Gauge Type: ${data['gaugeType']}",
+                        style: boldTextStyle(color: Colors.black),
+                      ),
+                      Text(
+                        "Calib Due In(Days): $dueCalibDate",
+                        style: boldTextStyle(color: Colors.black),
+                      ),
+                      Text(
+                        "Msa Due In(Days): $dueMsaDate",
+                        style: boldTextStyle(color: Colors.black),
+                      ),
+                    ],
+                  )))
+                ],
+              )),
+          Expanded(
+              child: SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        borderOnForeground: true,
+                        child: ListTile(
+                          // tileColor: Colors.white54,
+                          shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  color: Colors.grey, width: 1),
+                              borderRadius: BorderRadius.circular(5)),
+                          title: Text(modData.keys.elementAt(index)),
+                          trailing:
+                              Text(modData.values.elementAt(index).toString()),
+                        ),
+                      );
+                    },
+                    itemCount: modData.length,
+                  )))
         ],
       ),
     );
