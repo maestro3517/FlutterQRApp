@@ -95,44 +95,104 @@ class QrDataDisplayState extends State<QrDataDisplay> {
       ),
       body: Column(
         children: [
-          Image.memory(base64Decode(image), fit: BoxFit.cover).expand(),
           Card(
-              margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-              child: Row(
-                children: [
-                  Expanded(
-                      child: SizedBox(
-                          child: GridView.count(
-                    primary: false,
-                    padding: const EdgeInsets.all(30),
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 4,
-                    children: <Widget>[
-                      Text(
-                        "Gauge Status: ${data['gaugeStatus']}",
-                        style: data['guageStatus'] == 'ACTIVE'
-                            ? boldTextStyle(color: Colors.green)
-                            : boldTextStyle(color: Colors.red),
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            elevation: 2,
+            margin: const EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Image.memory(
+                  base64Decode(image),
+                  fit: BoxFit.cover,
+                  height: 200,
+                ),
+                //divider with depth
+                const Divider(
+                  thickness: 4,
+                  color: Colors.black12,
+                ),
+                SizedBox(
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                        child: Text(
+                          "Storage Location: ${data['storageLoc']}",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: data['storageLoc'] == 'LOC-2'
+                                ? Colors.blue
+                                : data['storageLoc'] == 'B'
+                                    ? Colors.blue
+                                    : data['storageLoc'] == 'C'
+                                        ? Colors.red
+                                        : Colors.black,
+                          ),
+                        ),
                       ),
-                      Text(
-                        "Gauge Type: ${data['gaugeType']}",
-                        style: boldTextStyle(color: Colors.black),
-                      ),
-                      Text(
-                        "Calib Due In(Days): $dueCalibDate",
-                        style: boldTextStyle(color: Colors.black),
-                      ),
-                      Text(
-                        "Msa Due In(Days): $dueMsaDate",
-                        style: boldTextStyle(color: Colors.black),
-                      ),
+                      GridView.count(
+                          shrinkWrap: true,
+                          crossAxisCount: 2,
+                          childAspectRatio: 4,
+                          children: [
+                            Container(
+                              padding:
+                                  const EdgeInsets.fromLTRB(15, 10, 10, 10),
+                              child: Text(
+                                "Gauge Status: ${data['gaugeStatus']}",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: data['gaugeStatus'] == 'ACTIVE'
+                                      ? Colors.green
+                                      : Colors.red,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: Text(
+                                "Gauge Type: ${data['gaugeType']}",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.fromLTRB(15, 10, 10, 10),
+                              child: Text(
+                                "Calib Due In(Days): $dueCalibDate",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: Text(
+                                "Msa Due In(Days): $dueMsaDate",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ])
                     ],
-                  )))
-                ],
-              )),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
               child: SizedBox(
                   height: 200,
