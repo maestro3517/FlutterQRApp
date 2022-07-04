@@ -62,6 +62,21 @@ class QrDataDisplayState extends State<QrDataDisplay> {
     if (mounted) super.setState(fn);
   }
 
+  Widget _titleOtherDetails() {
+    return const Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(15, 10, 0, 10),
+        child: Text(
+          'Other Details',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
