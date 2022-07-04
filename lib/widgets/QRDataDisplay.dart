@@ -193,30 +193,34 @@ class QrDataDisplayState extends State<QrDataDisplay> {
               ],
             ),
           ),
+          _titleOtherDetails(),
           Expanded(
               child: SizedBox(
-                  height: 200,
                   child: ListView.builder(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        borderOnForeground: true,
-                        child: ListTile(
-                          // tileColor: Colors.white54,
-                          shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  color: Colors.grey, width: 1),
-                              borderRadius: BorderRadius.circular(5)),
-                          title: Text(modData.keys.elementAt(index)),
-                          trailing:
-                              Text(modData.values.elementAt(index).toString()),
-                        ),
-                      );
-                    },
-                    itemCount: modData.length,
-                  )))
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) {
+              return Card(
+                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                borderOnForeground: true,
+                child: ListTile(
+                  // tileColor: Colors.white54,
+                  shape: RoundedRectangleBorder(
+                      side: const BorderSide(color: Colors.grey, width: 0),
+                      borderRadius: BorderRadius.circular(5)),
+                  title: Text(modData.keys.elementAt(index),
+                      style: const TextStyle(
+                        fontSize: 16,
+                      )),
+                  trailing: Text(modData.values.elementAt(index).toString(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                      )),
+                ),
+              );
+            },
+            itemCount: modData.length,
+          )))
         ],
       ),
     );
