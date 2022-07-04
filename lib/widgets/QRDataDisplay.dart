@@ -29,7 +29,11 @@ class QrDataDisplayState extends State<QrDataDisplay> {
     setState(() {
       data = widget.data.toJson();
       for (final qrKey in excludeQrData) {
-        modData[qrKey] = data[qrKey];
+        if (qrKey.contains('Date')) {
+          modData[qrKey] = DateTime.fromMillisecondsSinceEpoch(data[qrKey]);
+        } else {
+          modData[qrKey] = data[qrKey];
+        }
       }
     });
     init();
