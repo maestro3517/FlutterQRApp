@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_app/constants.dart';
 import 'package:flutter_qr_app/types/qr.dart';
+import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class QrDataDisplay extends StatefulWidget {
@@ -29,10 +30,12 @@ class QrDataDisplayState extends State<QrDataDisplay> {
     setState(() {
       data = widget.data.toJson();
       for (final qrKey in excludeQrData) {
+        final modKey =  qrKey.substring(0, 1).toUpperCase() + qrKey.substring(1).replaceAllMapped(RegExp(r'(.)([A-Z])'), (match) => '${match[1]} ${match[2]}');
+
         if (qrKey.contains('Date')) {
-          modData[qrKey] = DateTime.fromMillisecondsSinceEpoch(data[qrKey]);
+          modData[modKey] = DateFormat('MM/dd/yyyy').format(DateTime.fromMillisecondsSinceEpoch(data[qrKey]));
         } else {
-          modData[qrKey] = data[qrKey];
+          modData[modKey] = data[qrKey];
         }
       }
     });
@@ -86,7 +89,7 @@ class QrDataDisplayState extends State<QrDataDisplay> {
           },
           child: const Icon(
             Icons.arrow_back_ios,
-            color: Colors.black54,
+            color: Colors.white,
           ),
         ),
       ),
