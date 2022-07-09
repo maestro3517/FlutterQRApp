@@ -40,7 +40,7 @@ Future<void> setHeaders(HttpClientRequest req,
 
 Future<LoginResponse> login(LoginData login, bool rememberMe) async {
   final req =
-      await httpClient.postUrl(Uri.parse("${constants.baseUrl}/gauth/login"));
+      await httpClient.postUrl(Uri.parse("${constants.baseUrl}gauth/login"));
 
   await setHeaders(req);
 
