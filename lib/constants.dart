@@ -31,3 +31,12 @@ const key=String.fromEnvironment('KEY', defaultValue: '');
 
 Key aesKey = Key.fromUtf8(key);
 IV iv = IV.fromUtf8(key);
+//exclude G QR data
+const excludeQrData = [
+  'divId',
+  'deptId',
+  'lastCalibrationDate',
+  'nextCalibrationDate',
+  'lastMsaDate',
+  'nextMsaDate'
+];

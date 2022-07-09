@@ -88,13 +88,11 @@ Future<bool> checkToken(String key) async{
   final token = storage.getItem('token')[0].toString();
 
   final Map<String, String> headers = {};
-
   if (token.isNotEmpty && token != "null") {
     headers[constants.tokenKey] = token;
   }
 
   await setHeaders(req, headers.isEmpty ? null : headers);
-  await req.flush();
   final res = await req.close();
 
   if(res.statusCode==403){
@@ -123,7 +121,6 @@ Future<QrData> getScanData(String qrCode) async {
   }
 
   await setHeaders(req, headers.isEmpty ? null : headers);
-
   final res = await req.close();
 
   // final x = (await res.transform(utf8.decoder).join());
