@@ -106,8 +106,11 @@ Future<bool> checkToken(String key) async{
 
 Future<QrData> getScanData(String qrCode) async {
   final loginKey = storage.getItem("loginKey");
+
+  final correctedQr=qrCode.split("_")[0];
+
   final req = await httpClient.getUrl(Uri.parse(
-      "${constants.baseUrl}gauge/read/qr/?scandata=${qrCode}_$loginKey"));
+      "${constants.baseUrl}gauge/read/qr/?scandata=${correctedQr}_$loginKey"));
 
   final token = storage.getItem('token')[0].toString();
 
