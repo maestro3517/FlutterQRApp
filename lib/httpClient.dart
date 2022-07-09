@@ -88,13 +88,11 @@ Future<bool> checkToken(String key) async{
   final token = storage.getItem('token')[0].toString();
 
   final Map<String, String> headers = {};
-
   if (token.isNotEmpty && token != "null") {
     headers[constants.tokenKey] = token;
   }
 
   await setHeaders(req, headers.isEmpty ? null : headers);
-  await req.flush();
   final res = await req.close();
 
   if(res.statusCode==403){
@@ -108,8 +106,11 @@ Future<bool> checkToken(String key) async{
 
 Future<QrData> getScanData(String qrCode) async {
   final loginKey = storage.getItem("loginKey");
+
+  final correctedQr=qrCode.split("_")[0];
+
   final req = await httpClient.getUrl(Uri.parse(
-      "${constants.baseUrl}gauge/read/qr/?scandata=${qrCode}_$loginKey"));
+      "${constants.baseUrl}gauge/read/qr/?scandata=${correctedQr}_$loginKey"));
 
   final token = storage.getItem('token')[0].toString();
 
@@ -120,7 +121,6 @@ Future<QrData> getScanData(String qrCode) async {
   }
 
   await setHeaders(req, headers.isEmpty ? null : headers);
-  await req.flush();
   final res = await req.close();
 
   // final x = (await res.transform(utf8.decoder).join());

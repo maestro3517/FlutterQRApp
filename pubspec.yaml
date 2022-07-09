@@ -39,7 +39,11 @@ dependencies:
   intl: ^0.17.0
   localstorage: 4.0.0+1
   encrypt: 5.0.1
-  qr_code_scanner: ^1.0.0
+  image_picker: 0.8.5+3
+  qr_code_scanner:
+    git:
+      url: https://github.com/mdrokz/qr_code_scanner.git
+      ref: implement_analyze_qr_from_image
   cached_network_image: ^3.1.0
   html: ^0.15.0
 
