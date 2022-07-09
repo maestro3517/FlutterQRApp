@@ -85,7 +85,7 @@ class QrDataDisplayState extends State<QrDataDisplay> {
         centerTitle: true,
         leading: InkWell(
           onTap: () {
-            Navigator.pop(context);
+           finish(context);
           },
           child: const Icon(
             Icons.arrow_back_ios,

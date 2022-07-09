@@ -76,10 +76,11 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
         context,
         MaterialPageRoute(builder: (context) => QrDataDisplay(data: data)),
       ).then((value) => setState(() async {
-        await controller?.resumeCamera();
-      }));
+            await controller?.resumeCamera();
+          }));
     }
-  }
+    }
+
 
   Future<void> analyzeImage() async {
     await controller?.pauseCamera();
@@ -115,6 +116,7 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
 
       if (qrCode != null && qrCode.isNotEmpty) {
           processCode(qrCode);
+
       }
       setState(() {
         result = scanData;
