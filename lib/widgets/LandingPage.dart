@@ -74,7 +74,7 @@ class LandingPageStatefulWidget extends State<LandingPage> {
           await Navigator.push(context, MaterialPageRoute(builder: (context) => WAQrScannerScreen()));
         },
         tooltip: 'Increment',
-        child: const Icon(Icons.camera),
+        child: const Icon(Icons.camera_alt),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
