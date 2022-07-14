@@ -1,6 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_qr_app/Widgets/LandingPage.dart';
+import 'package:flutter_qr_app/widgets/LandingPage.dart';
 import 'package:flutter_qr_app/httpClient.dart';
 import 'package:flutter_qr_app/widgets/WAQrScannerScreen.dart';
 import 'package:page_transition/page_transition.dart';
