@@ -60,6 +60,7 @@ Future<LoginResponse> login(LoginData login, bool rememberMe) async {
       final token = res.headers[constants.tokenKey];
       await storage.setItem('token', token);
       await storage.setItem('loginKey', login.loginKey.toString());
+      await storage.setItem('userName', login.un.toString());
 
       if (rememberMe) {
         await storage.setItem('creds', login);
@@ -88,7 +89,7 @@ Future<bool> checkToken(String key) async{
   final token = storage.getItem('token')[0].toString();
 
   final Map<String, String> headers = {};
-  if (token.isNotEmpty && token != "null") {
+  if (token.isNotEmpty) {
     headers[constants.tokenKey] = token;
   }
 
@@ -133,4 +134,5 @@ Future<QrData> getScanData(String qrCode) async {
 void logout() async {
   await storage.deleteItem("token");
   await storage.deleteItem("loginKey");
+  await storage.deleteItem("userName");
 }

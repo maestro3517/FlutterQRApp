@@ -36,12 +36,13 @@ class _SplashScreenState extends State<SplashScreen> {
       future: storage.ready,
       builder: (BuildContext context, snapshot) {
         final token = storage.getItem('token');
-        final userId = storage.getItem('creds')['un'].toString().split("@")[0];
+
 
         if (token != null) {
           return FutureBuilder(
             future: check(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              final userId = storage.getItem('userName').split("@")[0];
               return LandingPage(userId: userId);
             },
           );

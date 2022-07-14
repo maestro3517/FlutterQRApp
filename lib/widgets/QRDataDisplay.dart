@@ -116,13 +116,15 @@ class QrDataDisplayState extends State<QrDataDisplay> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: data['storageLoc'] == 'LOC-2'
-                                ? Colors.blue
-                                : data['storageLoc'] == 'B'
-                                    ? Colors.blue
-                                    : data['storageLoc'] == 'C'
-                                        ? Colors.red
-                                        : Colors.black,
+                            color: data['storageLoc'] == 'ISSUED'
+                                ? const Color(0xFFFFE2E5)
+                                : data['storageLoc'] == 'OUT FOR CALIBRATION'
+                                    ? const Color(0xFFE1F0FF)
+                                    : data['storageLoc'] == 'OUT FOR LINEARITY'
+                                        ? const Color(0xFFC9F7F5)
+                                      :data['storageLoc'] == 'OUT FOR BIAS'
+                                            ? const Color(0xFFEEE5FF)
+                                            : Colors.black,
                           ),
                         ),
                       ),
@@ -140,8 +142,12 @@ class QrDataDisplayState extends State<QrDataDisplay> {
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: data['gaugeStatus'] == 'ACTIVE'
-                                      ? Colors.green
-                                      : Colors.red,
+                                      ? const Color(0xFF28a745)
+                                      : data['storageLoc'] == 'DAMAGED'
+                                      ? const Color(0xFFdc3545)
+                                      : data['storageLoc'] == 'INACTIVE'
+                                      ? const Color(0xFFffc107)
+                                      : Colors.black,
                                 ),
                               ),
                             ),
@@ -203,6 +209,7 @@ class QrDataDisplayState extends State<QrDataDisplay> {
                   title: Text(modData.keys.elementAt(index),
                       style: const TextStyle(
                         fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       )),
                   trailing: Text(modData.values.elementAt(index).toString(),
                       style: const TextStyle(
