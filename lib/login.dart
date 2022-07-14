@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_qr_app/Widgets/LandingPage.dart';
+import 'package:flutter_qr_app/widgets/LandingPage.dart';
 
 import 'package:flutter_qr_app/widgets/LoginPassword.dart';
 import 'package:flutter_qr_app/widgets/LoginUsername.dart';
