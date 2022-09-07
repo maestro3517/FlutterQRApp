@@ -2,7 +2,6 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_app/widgets/LandingPage.dart';
 import 'package:flutter_qr_app/httpClient.dart';
-import 'package:flutter_qr_app/widgets/WAQrScannerScreen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -19,7 +18,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final LocalStorage storage = LocalStorage(constants.localStorageKey);
   static const colorCustom = MaterialColor(0xFF985aed, constants.color);
-  bool status = false;
 
   @override
   void initState() {
@@ -37,13 +35,23 @@ class _SplashScreenState extends State<SplashScreen> {
       builder: (BuildContext context, snapshot) {
         final token = storage.getItem('token');
 
-
         if (token != null) {
           return FutureBuilder(
             future: check(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              final userId = storage.getItem('userName').split("@")[0];
-              return LandingPage(userId: userId);
+              if (snapshot.hasData) {
+                if (snapshot.data) {
+                  final userId = storage.getItem('userName').split("@")[0];
+                  return LandingPage(userId: userId);
+                } else {
+                  return const LoginWrapper();
+                }
+              }
+              else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
             },
           );
         } else {

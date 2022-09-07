@@ -66,48 +66,48 @@ class Data {
     required this.billId,
     required this.imageId,
     required this.gaugeProfile,
-    required this.lastMsaDate,
-    required this.msaFrequency,
-    required this.nextMsaDate,
+    this.lastMsaDate,
+    this.msaFrequency,
+    this.nextMsaDate,
     required this.calibFrequency,
     // required this.qr,
   });
 
-  int id;
-  String controlNo;
-  String serialNo;
-  String assetNo;
-  String nistNo;
-  String gaugeType;
-  String model;
-  String manufacturer;
-  String manufacturerDet;
-  String measurementTypes;
-  String measurementUnit;
-  String rangeOrSize;
-  String accuracy;
-  String sourceVendor;
-  double guageCost;
-  String gaugeDesc;
-  String storageLoc;
-  String gaugeStatus;
-  String conditionAcquired;
-  int divId;
-  int grId;
-  int deptId;
-  int createdTs;
+  int? id;
+  String? controlNo;
+  String? serialNo;
+  String? assetNo;
+  String? nistNo;
+  String? gaugeType;
+  String? model;
+  String? manufacturer;
+  String? manufacturerDet;
+  String? measurementTypes;
+  String? measurementUnit;
+  String? rangeOrSize;
+  String? accuracy;
+  String? sourceVendor;
+  double? guageCost;
+  String? gaugeDesc;
+  String? storageLoc;
+  String? gaugeStatus;
+  String? conditionAcquired;
+  int? divId;
+  int? grId;
+  int? deptId;
+  int? createdTs;
   dynamic updatedTs;
-  int lastCalibrationDate;
-  int nextCalibrationDate;
-  int acquiredDate;
-  int certId;
+  int? lastCalibrationDate;
+  int? nextCalibrationDate;
+  int? acquiredDate;
+  int? certId;
   dynamic billId;
   dynamic imageId;
-  String gaugeProfile;
-  int lastMsaDate;
-  int msaFrequency;
-  int nextMsaDate;
-  int calibFrequency;
+  String? gaugeProfile;
+  int? lastMsaDate;
+  int? msaFrequency;
+  int? nextMsaDate;
+  int? calibFrequency;
   // String qr;
 
   factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
@@ -139,16 +139,16 @@ class Data {
     deptId: json["deptId"],
     createdTs: json["createdTs"],
     updatedTs: json["updatedTs"],
-    lastCalibrationDate: json["lastCalibrationDate"],
-    nextCalibrationDate: json["nextCalibrationDate"],
-    acquiredDate: json["acquiredDate"],
+    lastCalibrationDate: json["lastCalibrationDate"]??0,
+    nextCalibrationDate: json["nextCalibrationDate"]??0,
+    acquiredDate: json["acquiredDate"]??0,
     certId: json["certId"],
     billId: json["billId"],
     imageId: json["imageId"],
-    gaugeProfile: json["gaugeProfile"],
-    lastMsaDate: json["lastMsaDate"],
-    msaFrequency: json["msaFrequency"],
-    nextMsaDate: json["nextMsaDate"],
+    gaugeProfile: json["gaugeProfile"]??"",
+    lastMsaDate: json["lastMsaDate"]??0,
+    msaFrequency: json["msaFrequency"]??0,
+    nextMsaDate: json["nextMsaDate"]??0,
     calibFrequency: json["calibFrequency"],
     // qr: json["qr"],
   );
