@@ -69,36 +69,52 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
     await controller?.pauseCamera();
     final scanData = await getScanData(qrCode);
 
-    if (scanData.gmsErrors.isEmpty) {
-      final data = scanData.data;
-      if (!mounted) return;
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => QrDataDisplay(data: data)),
-      ).then((value) => setState(() async {
-            await controller?.resumeCamera();
-          }));
-    }
+    if (scanData != null) {
+      if (scanData!.gmsErrors.isEmpty) {
+        final data = scanData.data;
+        if (data != null) {
+          print(data.id);
+        }
+        if (!mounted) return;
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => QrDataDisplay(data: data)),
+        ).then((value) => setState(() async {
+              await controller?.resumeCamera();
+            }));
+      }
     }
 
+    else {
+      toast('Invalid QR Code');
+      await controller?.resumeCamera();
+    }
+  }
 
   Future<void> analyzeImage() async {
     await controller?.pauseCamera();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     final qrCode = await controller?.analyzeImage(image!.path);
     if (qrCode != null) {
-
       final scanData = await getScanData(qrCode);
 
-      if (scanData.gmsErrors.isEmpty) {
-        final data = scanData.data;
-        if (!mounted) return;
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => QrDataDisplay(data: data)),
-        ).then((value) => setState(() async {
-          await controller?.resumeCamera();
-        }));
+      if (scanData != null) {
+        if (scanData!.gmsErrors.isEmpty) {
+          final data = scanData.data;
+          if (!mounted) return;
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => QrDataDisplay(data: data)),
+          ).then((value) =>
+              setState(() async {
+                await controller?.resumeCamera();
+              }));
+        }
+      }
+
+      else {
+        toast('Invalid QR Code');
+        await controller?.resumeCamera();
       }
     }
   }
@@ -112,11 +128,10 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
     controller.resumeCamera();
 
     controller.scannedDataStream.listen((scanData) {
-      final qrCode=scanData.code;
+      final qrCode = scanData.code;
 
       if (qrCode != null && qrCode.isNotEmpty) {
-          processCode(qrCode);
-
+        processCode(qrCode);
       }
       setState(() {
         result = scanData;
@@ -131,51 +146,48 @@ class WAQrScannerScreenState extends State<WAQrScannerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return( Scaffold(
+    return (Scaffold(
       body: Stack(
         children: [
           _buildQrView(context),
-          Column(
-            children: [
-              30.height,
-              Align(
-                alignment: Alignment.topLeft,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  margin: const EdgeInsets.all(8),
-                  decoration: boxDecorationWithRoundedCorners(
-                    backgroundColor: Colors.transparent,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: const Icon(Icons.arrow_back, color: Colors.white),
-                ).onTap(() {
-                  finish(context);
-                }).paddingOnly(top: 18, right: 16),
-              ),
-              Text('Hold your QR inside the frame',
-                  style: boldTextStyle(color: Colors.white, size: 18)).paddingOnly(top: 18),
-
-            ]),
+          Column(children: [
+            30.height,
             Align(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.topLeft,
               child: Container(
                 padding: const EdgeInsets.all(8),
                 margin: const EdgeInsets.all(8),
                 decoration: boxDecorationWithRoundedCorners(
-                  backgroundColor: Theme.of(context).primaryColor,
+                  backgroundColor: Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Theme.of(context).primaryColor),
+                  border: Border.all(color: Colors.grey),
                 ),
-                child: const Text("Import QR From Gallery"),
+                child: const Icon(Icons.arrow_back, color: Colors.white),
               ).onTap(() {
-                analyzeImage();
-              }).paddingOnly(bottom: 30),
+                finish(context);
+              }).paddingOnly(top: 18, right: 16),
             ),
-
+            Text('Hold your QR inside the frame',
+                    style: boldTextStyle(color: Colors.white, size: 18))
+                .paddingOnly(top: 18),
+          ]),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              margin: const EdgeInsets.all(8),
+              decoration: boxDecorationWithRoundedCorners(
+                backgroundColor: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Theme.of(context).primaryColor),
+              ),
+              child: const Text("Import QR From Gallery"),
+            ).onTap(() {
+              analyzeImage();
+            }).paddingOnly(bottom: 30),
+          ),
         ],
       ),
-    )
-    );
+    ));
   }
 }
