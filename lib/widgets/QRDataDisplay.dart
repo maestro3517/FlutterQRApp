@@ -19,8 +19,8 @@ class QrDataDisplay extends StatefulWidget {
 
 class QrDataDisplayState extends State<QrDataDisplay> {
   late Map<String, dynamic> data;
-  late String dueCalibDate="";
-  late String dueMsaDate="";
+  late String dueCalibDate = "";
+  late String dueMsaDate = "";
   late Map<String, dynamic> modData = {};
   late var decodedImage = null;
 
@@ -35,8 +35,8 @@ class QrDataDisplayState extends State<QrDataDisplay> {
                 RegExp(r'(.)([A-Z])'), (match) => '${match[1]} ${match[2]}');
 
         if (qrKey.contains('Date') && data[qrKey] != 0) {
-          modData[modKey] = DateFormat('MM/dd/yyyy').format(
-              DateTime.fromMillisecondsSinceEpoch(data[qrKey]));
+          modData[modKey] = DateFormat('MM/dd/yyyy')
+              .format(DateTime.fromMillisecondsSinceEpoch(data[qrKey]));
         } else {
           modData[modKey] = data[qrKey];
         }
@@ -49,33 +49,27 @@ class QrDataDisplayState extends State<QrDataDisplay> {
     final date = DateTime.now();
 
     if (data['nextCalibrationDate'] != 0) {
-      final dueCalibTime = DateTime.fromMillisecondsSinceEpoch(
-          data['nextCalibrationDate']);
+      final dueCalibTime =
+          DateTime.fromMillisecondsSinceEpoch(data['nextCalibrationDate']);
       dueCalibDate = dueCalibTime.difference(date).inDays.toString();
     }
 
     if (data['nextMsaDate'] != 0) {
-      final dueMsaTime = DateTime.fromMillisecondsSinceEpoch(
-          data['nextMsaDate']);
-      dueMsaDate = dueMsaTime.difference(date).toString();
+      final dueMsaTime =
+          DateTime.fromMillisecondsSinceEpoch(data['nextMsaDate']);
+      dueMsaDate = dueMsaTime.difference(date).inDays.toString();
     }
 
-    if (data['gaugeProfile'] != null) {
+    if (data['gaugeProfile'] != "") {
       try {
         decodedImage = base64Decode(data['gaugeProfile'].split(',')[1]);
       } catch (e) {
         print(e);
       }
+    } else {
+      //display a default image for Image.memory
+      decodedImage=base64Decode(defaultImage);
     }
-
-    /* final dueCalibTime = DateTime.fromMillisecondsSinceEpoch(data['nextCalibrationDate']);
-    final dueMsaTime = DateTime.fromMillisecondsSinceEpoch(data['nextMsaDate']);
-
-    //calculate current date minus data.nextCalibrationDate
-    dueCalibDate = date.difference(dueCalibTime).inDays.toString();
-
-    //calculate current date minus data.nextMsaDate
-    dueMsaDate = date.difference(dueMsaTime).inDays.toString();*/
   }
 
   @override
@@ -126,8 +120,7 @@ class QrDataDisplayState extends State<QrDataDisplay> {
             margin: const EdgeInsets.all(10),
             child: Column(
               children: [
-                Image.memory(decodedImage,
-                    fit: BoxFit.fill),
+                Image.memory(decodedImage, fit: BoxFit.fill),
                 SizedBox(
                   child: Column(
                     children: [
@@ -141,12 +134,12 @@ class QrDataDisplayState extends State<QrDataDisplay> {
                             color: data['storageLoc'] == 'ISSUED'
                                 ? const Color(0xFFFFE2E5)
                                 : data['storageLoc'] == 'OUT FOR CALIBRATION'
-                                ? const Color(0xFFE1F0FF)
-                                : data['storageLoc'] == 'OUT FOR LINEARITY'
-                                ? const Color(0xFFC9F7F5)
-                                : data['storageLoc'] == 'OUT FOR BIAS'
-                                ? const Color(0xFFEEE5FF)
-                                : Colors.black,
+                                    ? const Color(0xFFE1F0FF)
+                                    : data['storageLoc'] == 'OUT FOR LINEARITY'
+                                        ? const Color(0xFFC9F7F5)
+                                        : data['storageLoc'] == 'OUT FOR BIAS'
+                                            ? const Color(0xFFEEE5FF)
+                                            : Colors.black,
                           ),
                         ),
                       ),
@@ -157,7 +150,7 @@ class QrDataDisplayState extends State<QrDataDisplay> {
                           children: [
                             Container(
                               padding:
-                              const EdgeInsets.fromLTRB(15, 10, 10, 10),
+                                  const EdgeInsets.fromLTRB(10, 10, 10, 10),
                               child: Text(
                                 "Gauge Status: ${data['gaugeStatus']}",
                                 style: TextStyle(
@@ -165,17 +158,17 @@ class QrDataDisplayState extends State<QrDataDisplay> {
                                   fontWeight: FontWeight.bold,
                                   color: data['gaugeStatus'] == 'ACTIVE'
                                       ? const Color(0xFF28a745)
-                                      : data['storageLoc'] == 'DAMAGED'
-                                      ? const Color(0xFFdc3545)
-                                      : data['storageLoc'] == 'INACTIVE'
-                                      ? const Color(0xFFffc107)
-                                      : Colors.black,
+                                      : data['gaugeStatus'] == 'DELETED'
+                                          ? const Color(0xFFdc3545)
+                                          : data['gaugeStatus'] == 'INACTIVE'
+                                              ? const Color(0xFFffc107)
+                                              : Colors.black,
                                 ),
                               ),
                             ),
                             Container(
                               padding:
-                              const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  const EdgeInsets.fromLTRB(10, 10, 0, 10),
                               child: Text(
                                 "Gauge Type: ${data['gaugeType']}",
                                 style: const TextStyle(
@@ -186,7 +179,7 @@ class QrDataDisplayState extends State<QrDataDisplay> {
                             ),
                             Container(
                               padding:
-                              const EdgeInsets.fromLTRB(15, 10, 10, 10),
+                                  const EdgeInsets.fromLTRB(10, 10, 10, 10),
                               child: Text(
                                 "Calib Due In(Days): $dueCalibDate",
                                 style: const TextStyle(
@@ -197,7 +190,7 @@ class QrDataDisplayState extends State<QrDataDisplay> {
                             ),
                             Container(
                               padding:
-                              const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  const EdgeInsets.fromLTRB(10, 10, 0, 10),
                               child: Text(
                                 "Msa Due In(Days): $dueMsaDate",
                                 style: const TextStyle(
@@ -217,33 +210,31 @@ class QrDataDisplayState extends State<QrDataDisplay> {
           Expanded(
               child: SizedBox(
                   child: ListView.builder(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        borderOnForeground: true,
-                        child: ListTile(
-                          // tileColor: Colors.white54,
-                          shape: RoundedRectangleBorder(
-                              side: const BorderSide(color: Colors.grey,
-                                  width: 0),
-                              borderRadius: BorderRadius.circular(5)),
-                          title: Text(modData.keys.elementAt(index),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              )),
-                          trailing: Text(modData.values.elementAt(index)
-                              .toString(),
-                              style: const TextStyle(
-                                fontSize: 16,
-                              )),
-                        ),
-                      );
-                    },
-                    itemCount: modData.length,
-                  )))
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) {
+              return Card(
+                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                borderOnForeground: true,
+                child: ListTile(
+                  // tileColor: Colors.white54,
+                  shape: RoundedRectangleBorder(
+                      side: const BorderSide(color: Colors.grey, width: 0),
+                      borderRadius: BorderRadius.circular(5)),
+                  title: Text(modData.keys.elementAt(index),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      )),
+                  trailing: Text(modData.values.elementAt(index).toString(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                      )),
+                ),
+              );
+            },
+            itemCount: modData.length,
+          )))
         ],
       ),
     );
