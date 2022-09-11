@@ -105,13 +105,18 @@ Future<bool> checkToken(String key) async{
   }
 }
 
-Future<QrData> getScanData(String qrCode) async {
+Future<QrData?> getScanData(String qrCode) async {
   final loginKey = storage.getItem("loginKey");
 
-  final correctedQr=qrCode.split("_")[0];
+  if (qrCode.split("_").length != 2 &&
+      int.tryParse(qrCode.split("_")[0]) == null) {
+    return null;
+  }
+
+  final guageId=qrCode.split("_")[0];
 
   final req = await httpClient.getUrl(Uri.parse(
-      "${constants.baseUrl}gauge/read/qr/?scandata=${correctedQr}_$loginKey"));
+      "${constants.baseUrl}gauge/read/qr/?scandata=${guageId}_$loginKey"));
 
   final token = storage.getItem('token')[0].toString();
 
@@ -125,10 +130,16 @@ Future<QrData> getScanData(String qrCode) async {
   final res = await req.close();
 
   // final x = (await res.transform(utf8.decoder).join());
+  final scanData = await res.transform(utf8.decoder).join();
+  var data=json.decode(scanData);
 
-  final scanData = (await res.transform(utf8.decoder).join()).parseScanData();
+  if(data["status"]=="SUCCESS"){
+    return scanData.parseScanData();
+  }
 
-  return scanData;
+  else{
+    return null;
+  }
 }
 
 void logout() async {
